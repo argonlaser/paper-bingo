@@ -1,0 +1,35 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+var socket = io('http://localhost:8080')
+
+var handleNewsEvent = function (data) {
+    console.log(data)
+    socket.emit('my other event', { my: 'data' })
+}
+
+/**
+ * Set message text
+ * @param {string} text
+ */
+function setMessage (text) {
+    message.innerHTML = text
+}
+
+socket.on('news', handleNewsEvent)
+
+socket.on('connect', function () {
+      setMessage('Waiting for opponent...')
+})
+
+socket.on('disconnect', function () {
+      setMessage('Connection lost!')
+})
+</script>
+
+<html>
+<body>
+
+    <h1 id="message"></h1>
+</body>
+</html>
