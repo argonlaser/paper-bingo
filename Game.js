@@ -1,5 +1,6 @@
 const uuid = require('uuid/v1')
 const gameData = require('./common/data.js')
+const logger = require('./Logger/winston.js')
 
 var Game = function (user) {
   this.uuid = uuid()
@@ -7,9 +8,17 @@ var Game = function (user) {
   this.currentPlayer = user
   this.currentPlayerIndex = -1
   this.result = {}
-  this.isFull = false
+  this.count = 0
   this.state = gameData.gameState.WAITING
   this.mode = gameData.gameMode.ONLINE
+}
+
+Game.prototype.addCount = function() {
+  this.count++
+}
+
+Game.prototype.checkIfFull = function() {
+  return (this.count >= 2)
 }
 
 Game.prototype.getCurrentPlayerIndex = function () {
@@ -34,11 +43,29 @@ Game.prototype.getCurrentPlayer = function () {
 }
 
 Game.prototype.addPlayer = function (player) {
-  this.players.push(player)
+
+  let functionName = 'addPlayer'
+  logger.info(functionName, ' | ', 'In this function')
+
+  if(this.currentPlayerIndex === -1) {
+    this.currentPlayerIndex = 0
+  }
+  
+  if (this.count < 2) {
+    this.players.push(player)
+    this.count++
+  }
 }
 
 Game.prototype.removePlayer = function (player) {
   // add code to remove player
+  var index = this.players.indexOf(player);
+  
+  if (index > -1) {
+    console.log('remove', this.players[index].socket.id)
+    this.players.splice(index, 1);
+    this.count--
+  }
 }
 
 Game.prototype.getUUID = function () {

@@ -8,6 +8,9 @@ var handleNewsEvent = function (data) {
     socket.emit('my other event', { my: 'data' })
 }
 
+var handleStartEvent = function (data) {
+    console.log(data)
+}
 /**
  * Set message text
  * @param {string} text
@@ -17,6 +20,7 @@ function setMessage (text) {
 }
 
 socket.on('news', handleNewsEvent)
+socket.on('start', handleStartEvent)
 
 socket.on('connect', function () {
       setMessage('Waiting for opponent...')

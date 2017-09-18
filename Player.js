@@ -4,7 +4,7 @@ let Player = function (socket) {
   this.socket = socket
   this.gameBoard = {}
   this.bingoed = false
-  this.gameUUID = {}
+  this.gameUUID = null
   this.initGameBoard()
 }
 
