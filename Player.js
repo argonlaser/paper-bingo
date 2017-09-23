@@ -2,6 +2,7 @@ const Gameboard = require('./Gameboard.js')
 
 let Player = function (socket) {
   this.socketid = socket.id
+  this.socket = socket
   this.gameBoard = {}
   this.bingoed = false
   this.gameUUID = null
@@ -26,6 +27,10 @@ Player.prototype.getGameUUID = function (uuid) {
 
 Player.prototype.initGameBoard = function () {
   this.gameBoard = new Gameboard()
+}
+
+Player.prototype.sendEvent = function (eventName, payload) {
+  this.socket.emit(eventName, payload)
 }
 
 module.exports = Player

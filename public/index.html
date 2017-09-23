@@ -23,11 +23,15 @@ socket.on('news', handleNewsEvent)
 socket.on('start', handleStartEvent)
 
 socket.on('connect', function () {
-      setMessage('Waiting for opponent...')
+  setMessage('on connect event')
+})
+
+socket.on('game.started', function (payload) {
+  setMessage('game started ' + JSON.stringify(payload))  
 })
 
 socket.on('disconnect', function () {
-      setMessage('Connection lost!')
+  setMessage('Connection lost!')
 })
 </script>
 

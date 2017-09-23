@@ -21,5 +21,6 @@ module.exports = {
   gameState: gameState,
   gameMode: gameMode,
   position: position,
+  MAX_GAME_CAPACITY: 2,
   NO_OF_PLAYERS: 5
 }
