@@ -13,11 +13,11 @@ var Game = function (user) {
   this.mode = gameData.gameMode.ONLINE
 }
 
-Game.prototype.addCount = function() {
+Game.prototype.addCount = function () {
   this.count++
 }
 
-Game.prototype.checkIfFull = function() {
+Game.prototype.checkIfFull = function () {
   return (this.count >= 2)
 }
 
@@ -43,15 +43,14 @@ Game.prototype.getCurrentPlayer = function () {
 }
 
 Game.prototype.addPlayer = function (player) {
-
   let functionName = 'addPlayer'
   logger.info(functionName, ' | ', 'In this function')
 
-  if(this.currentPlayerIndex === -1) {
+  if (this.currentPlayerIndex === -1) {
     this.currentPlayerIndex = 0
   }
-  
-  if (this.count < 2) {
+
+  if (this.checkIfFull() === false) {
     this.players.push(player)
     this.count++
   }
@@ -59,11 +58,11 @@ Game.prototype.addPlayer = function (player) {
 
 Game.prototype.removePlayer = function (player) {
   // add code to remove player
-  var index = this.players.indexOf(player);
-  
+  var index = this.players.indexOf(player)
+
   if (index > -1) {
-    console.log('remove', this.players[index].socket.id)
-    this.players.splice(index, 1);
+    console.log('remove', this.players[index].socketid)
+    this.players.splice(index, 1)
     this.count--
   }
 }

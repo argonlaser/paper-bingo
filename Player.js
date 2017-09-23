@@ -1,7 +1,7 @@
 const Gameboard = require('./Gameboard.js')
 
 let Player = function (socket) {
-  this.socket = socket
+  this.socketid = socket.id
   this.gameBoard = {}
   this.bingoed = false
   this.gameUUID = null

@@ -3,17 +3,18 @@ const Game = require('./Game.js')
 const Player = require('./Player.js')
 const logger = require('./Logger/winston.js')
 
-let addGameToGlobal = function(game) {
+let addGameToGlobal = function (game) {
   let index = global.games.indexOf(game)
   if (index === -1) {
     global.games.push(game)
   }
 }
 
-let _findGame = function(user) {
+let _findGame = function (user) {
   let functionName = 'In _findGame'
   logger.info(functionName)
-  let foundGame = _.find(global.games, function(game) {
+  let foundGame = _.find(global.games, function (game) {
+    logger.warn(game.getUUID(), game.count)
     return game.count < 2
   })
 
@@ -22,18 +23,15 @@ let _findGame = function(user) {
     foundGame = new Game(user)
     addGameToGlobal(foundGame)
   }
-  
-  return foundGame
-}
 
-let handleDisconnectedEvent = function () {
-  logger.info('Disconnected: ' + socket.id)
+  foundGame.addPlayer(user)
+
+  return foundGame
 }
 
 let handleMyOtherEvent = function (data) {
   console.log(data)
 }
-
 
 let socket = function (socket) {
   // handle all connected related events.
@@ -54,7 +52,11 @@ let socket = function (socket) {
   socket.on('my other event', handleMyOtherEvent)
 
   // handle all disconnected related events
-  socket.on('disconnect', handleDisconnectedEvent)
+  socket.on('disconnect', function () {
+    // remove player from the game
+    foundGame.removePlayer(user)
+    logger.info('Disconnected: ' + socket.id)
+  })
 }
 
 module.exports = socket
