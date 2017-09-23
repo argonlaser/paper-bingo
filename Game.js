@@ -4,7 +4,7 @@ const logger = require('./Logger/winston.js')
 
 var Game = function (user) {
   this.uuid = uuid()
-  this.players = []
+  this.players = [user]
   this.currentPlayer = user
   this.currentPlayerIndex = -1
   this.result = {}
@@ -17,8 +17,8 @@ Game.prototype.addCount = function () {
   this.count++
 }
 
-Game.prototype.checkIfFull = function () {
-  return (this.count >= 2)
+Game.prototype.isFull = function () {
+  return this.players.length >= 2
 }
 
 Game.prototype.getCurrentPlayerIndex = function () {
@@ -46,13 +46,20 @@ Game.prototype.addPlayer = function (player) {
   let functionName = 'addPlayer'
   logger.info(functionName, ' | ', 'In this function')
 
-  if (this.currentPlayerIndex === -1) {
-    this.currentPlayerIndex = 0
-  }
-
-  if (this.checkIfFull() === false) {
+  if (this.isFull() === false) {
     this.players.push(player)
     this.count++
+  }
+
+  if (this.isFull()) {
+    this.start()
+  }
+}
+
+Game.prototype.start = function () {
+  for (var i = 0; i < this.players.length; i++) {
+    var player = this.players[i]
+    player.sendEvent('game.started', {players: [1, 2], gameId: this.uuid})
   }
 }
 

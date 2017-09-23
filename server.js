@@ -3,11 +3,12 @@ var io = require('socket.io')(app)
 var fs = require('fs')
 var path = require('path')
 const logger = require('./Logger/winston.js')
+var GamePool = require('./GamePool.js')
 
 app.listen(8080)
 logger.info('Server is running in port 8080')
 
-global.games = []
+global.gamePool = new GamePool()
 
 function handler (req, res) {
   fs.readFile(path.join(__dirname, '/public/index.html'),
@@ -25,4 +26,3 @@ function handler (req, res) {
 }
 
 io.on('connection', require('./socket.js'))
-global.io = io
