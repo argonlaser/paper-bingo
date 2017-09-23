@@ -1,26 +1,5 @@
-const _ = require('underscore')
-const Game = require('./Game.js')
 const Player = require('./Player.js')
 const logger = require('./Logger/winston.js')
-
-let _findGame = function (user) {
-  let functionName = 'In _findGame'
-  logger.info(functionName)
-
-  let foundGame = global.gamePool.findGameWithFreeSeats()
-
-  if (_.isEmpty(foundGame)) {
-    logger.error('Creating new game as no seats are available in current games.')
-    foundGame = new Game(user)
-    global.games.push(foundGame)
-  }
-
-  return foundGame
-}
-
-let handleMyOtherEvent = function (data) {
-  console.log(data)
-}
 
 let socket = function (socket) {
   // handle all connected related events.
@@ -28,7 +7,6 @@ let socket = function (socket) {
 
   let user = new Player(socket)
   let game = global.gamePool.AllocateGameForUser(user)
-
 
   socket.on('user.strike', function (payload) {
     user.stike(payload)

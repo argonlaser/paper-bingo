@@ -1,4 +1,3 @@
-'use strict'
 var _ = require('underscore')
 var Game = require('./Game.js')
 const GAME_CAPACITY = 2
