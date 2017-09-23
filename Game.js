@@ -61,7 +61,7 @@ Game.prototype.removePlayer = function (player) {
   var index = this.players.indexOf(player)
 
   if (index > -1) {
-    console.log('remove', this.players[index].socketid)
+    logger.debug('Remove user = ', this.players[index].socket.id, 'from game = ', this.getUUID())
     this.players.splice(index, 1)
     this.count--
   }
