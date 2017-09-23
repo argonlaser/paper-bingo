@@ -22,6 +22,8 @@ function setMessage (text) {
 socket.on('news', handleNewsEvent)
 socket.on('start', handleStartEvent)
 
+socket.emit('game.join', 'join')
+
 socket.on('connect', function () {
   setMessage('on connect event')
 })
