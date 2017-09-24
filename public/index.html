@@ -22,6 +22,22 @@ function setMessage (text) {
     message.innerHTML = text
 }
 
+/**
+ * Set test text
+ * @param {string} text
+ */
+ function setTest (text) {
+    test.innerHTML = text
+}
+
+/**
+ * Set received text
+ * @param {string} text
+ */
+ function setReceived(text) {
+    test.innerHTML = text
+}
+
 socket.on('news', handleNewsEvent)
 socket.on('start', handleStartEvent)
 
@@ -32,7 +48,32 @@ socket.on('connect', function () {
 })
 
 socket.on('game.started', function (payload) {
-  setMessage('game started ' + JSON.stringify(payload))  
+  setMessage('game started ' + JSON.stringify(payload))
+  var players = payload.players
+  var currPlayerIndex = payload.currPlayerIndex
+
+  if (socket.id === players[currPlayerIndex]) {
+      // wait for the button handler and emit event to server
+      setTest('My chance')
+      var randomNum = Math.floor(Math.random() * 13) + 1
+      socket.emit('user.strike', payload)
+  }
+})
+
+socket.on('striked', function (payload) {
+  setReceived(JSON.stringify(payload))
+  var players = payload.players
+  var currPlayerIndex = payload.currPlayerIndex
+  var randomNum = Math.floor(Math.random() * 13) + 1
+
+  payload.striked = randomNum
+
+  if (socket.id === players[currPlayerIndex]) {
+      // wait for the button handler and emit event to server
+      setTest('My chance')
+      
+      socket.emit('user.strike', payload)
+  }
 })
 
 socket.on('disconnect', function () {
@@ -44,5 +85,8 @@ socket.on('disconnect', function () {
 <body>
 
     <h1 id="message"></h1>
+    <h1 id="test"></h1>
+    <h3 id="received"></h3>
+ 
 </body>
 </html>

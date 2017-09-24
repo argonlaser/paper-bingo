@@ -1,5 +1,6 @@
 var _ = require('underscore')
 var Game = require('./Game.js')
+var logger = require('./Logger/winston.js')
 const GAME_CAPACITY = 2
 
 module.exports = GamePool
@@ -28,5 +29,14 @@ function GamePool () {
       game.addPlayer(user)
     }
     return game
+  }
+
+  this.RemoveGame = function (game) {
+    var index = games.indexOf(game)
+
+    if (index > -1) {
+      logger.debug('Remove game = ', game, 'from games ', game.getUUID())
+      games.splice(index, 1)
+    }
   }
 }

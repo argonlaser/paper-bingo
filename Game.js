@@ -10,7 +10,7 @@ var Game = function (user) {
   this.uuid = uuid()
   this.players = [user]
   this.currentPlayer = user
-  this.currentPlayerIndex = -1
+  this.currentPlayerIndex = 0
   this.result = {}
   this.state = gameData.gameState.WAITING
   this.mode = gameData.gameMode.ONLINE
@@ -84,7 +84,7 @@ Game.prototype.start = function () {
 
   for (var i = 0; i < this.players.length; i++) {
     var player = this.players[i]
-    player.sendEvent('game.started', {players: totalPlayers, gameId: this.uuid})
+    player.sendEvent('game.started', {players: totalPlayers, gameId: this.uuid, currPlayerIndex: 0})
   }
 }
 
@@ -138,6 +138,17 @@ Game.prototype.getMode = function () {
  */
 Game.prototype.setMode = function (mode) {
   this.mode = mode
+}
+
+/**
+ * Send event to all parties in the room
+ */
+Game.prototype.sendEvent = function (eventName, payload) {
+  var i = 0
+  for (i = 0; i < this.players.length; i++) {
+    var player = this.players[i]
+    player.sendEvent(eventName, payload)
+  }
 }
 
 module.exports = Game

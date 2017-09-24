@@ -9,7 +9,10 @@ let socket = function (socket) {
   let game
 
   socket.on('user.strike', function (payload) {
-    user.stike(payload)
+    console.log(payload)
+    // emit to all people in room and give chance to next person
+    payload.currPlayerIndex = game.increaseCurrentPlayerIndex()
+    game.sendEvent('striked', payload)
   })
 
   socket.on('game.join', function (payload) {
@@ -25,9 +28,14 @@ let socket = function (socket) {
 
   // handle all disconnected related events
   socket.on('disconnect', function () {
+    logger.info('Disconnected: ' + socket.id)
+
     // remove player from the game
     game && game.removePlayer(user)
-    logger.info('Disconnected: ' + socket.id)
+
+    if (game && game.players.length === 0) {
+      global.gamePool.RemoveGame(game)
+    }
   })
 }
 
