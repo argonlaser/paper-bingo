@@ -1,6 +1,7 @@
 const uuid = require('uuid/v1')
 const gameData = require('./common/data.js')
 const logger = require('./Logger/winston.js')
+const _ = require('underscore')
 
 /**
  * Constructor for game
@@ -79,9 +80,11 @@ Game.prototype.addPlayer = function (player) {
  * Starts the game and sets the status
  */
 Game.prototype.start = function () {
+  var totalPlayers = _.pluck(this.players, 'socketid')
+
   for (var i = 0; i < this.players.length; i++) {
     var player = this.players[i]
-    player.sendEvent('game.started', {players: [1, 2], gameId: this.uuid})
+    player.sendEvent('game.started', {players: totalPlayers, gameId: this.uuid})
   }
 }
 
