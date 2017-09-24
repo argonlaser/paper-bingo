@@ -16,11 +16,13 @@ Gameboard.prototype.scanBingo = function () {
 Gameboard.prototype.fillCheckbox = function (board) {
   let count = 0
   for (let i = 0; i < 5; i++) {
+    var arr = []
     for (let j = 0; j < 5; j++) {
       const cb = new Checkbox(i, j, board[count])
-      this.checkbox.push(cb)
+      arr.push(cb)
       count++
     }
+    this.checkbox.push(arr)
   }
 }
 
