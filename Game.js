@@ -24,6 +24,18 @@ Game.prototype.isFull = function () {
 }
 
 /**
+ * Strike number from all gameboards
+ */
+Game.prototype.strikeAll = function (value) {
+  var i
+  for (i = 0; i < this.players.length; i++) {
+    var player = this.players[i]
+    console.log(value)
+    player.gameBoard.strikeCheckbox(value)
+  }
+}
+
+/**
  * Gets the current player index
  */
 Game.prototype.getCurrentPlayerIndex = function () {

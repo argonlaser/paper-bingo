@@ -12,6 +12,7 @@ let socket = function (socket) {
     logger.debug(payload)
     // emit to all people in room and give chance to next person
     payload.currPlayerIndex = game.increaseCurrentPlayerIndex()
+    game.strikeAll(payload.striked)
     game.sendEvent('striked', payload)
   })
 
