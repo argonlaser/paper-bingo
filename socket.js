@@ -9,7 +9,7 @@ let socket = function (socket) {
   let game
 
   socket.on('user.strike', function (payload) {
-    console.log(payload)
+    logger.debug(payload)
     // emit to all people in room and give chance to next person
     payload.currPlayerIndex = game.increaseCurrentPlayerIndex()
     game.sendEvent('striked', payload)
