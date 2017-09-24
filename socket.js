@@ -13,7 +13,9 @@ let socket = function (socket) {
   })
 
   socket.on('game.join', function (payload) {
+    logger.warn(payload.board)
     logger.debug('game.join event :', socket.id)
+    user.gameBoard.fillCheckbox(payload.board)
     game = global.gamePool.AllocateGameForUser(user)
   })
 
